@@ -1,10 +1,10 @@
-# Validify Lab
+# Validify Kit
 
 A real-world **User Registration & Validation API** that demonstrates [`validify-kit`](https://www.npmjs.com/package/validify-kit) working in a full Node.js/Express application.
 
 ---
 
-## What is Validify Lab?
+## What is Validify Kit?
 
 `validify-kit` is a lightweight, **zero-dependency**, schema-driven validation toolkit for Node.js and Express applications. Instead of writing repetitive if-statements to check request data, you define a schema once and let the library enforce it on every request.
 
@@ -28,7 +28,7 @@ A real-world **User Registration & Validation API** that demonstrates [`validify
 
 ---
 
-## Why is Validify Lab Useful?
+## Why is Validify Kit Useful?
 
 1. **Less code** – replace dozens of manual checks with one schema object.
 2. **Consistent errors** – structured `{ field, message }` error objects every time.
@@ -43,7 +43,7 @@ A real-world **User Registration & Validation API** that demonstrates [`validify
 ```bash
 # Clone the repository
 git clone <repo-url>
-cd validify-lab
+cd validify-Kit
 
 # Install dependencies
 npm install
@@ -70,7 +70,7 @@ npm run dev
 ## Project Structure
 
 ```
-validify-lab/
+validify-Kit/
 │
 ├── public/
 │   ├── index.html      ← Frontend UI
@@ -105,7 +105,7 @@ Returns server status.
 ```json
 {
   "status": "ok",
-  "service": "validify-lab",
+  "service": "validify-Kit",
   "timestamp": "2024-01-15T10:30:00.000Z"
 }
 ```
@@ -133,7 +133,7 @@ Uses **`validateRequest(schema)`** middleware from `validify-kit`.
 ```json
 {
   "valid": true,
-  "message": "Registration successful! Validify Lab validated and sanitized your input.",
+  "message": "Registration successful! Validify Kit validated and sanitized your input.",
   "user": {
     "name":   "Alice Johnson",
     "email":  "alice@example.com",
@@ -175,7 +175,7 @@ A testing endpoint that runs the same schema rules but always returns the full `
 
 ---
 
-## How the Application Uses Validify Lab
+## How the Application Uses Validify Kit
 
 ### 1. Schema definition (`src/validators/userSchema.js`)
 
@@ -263,7 +263,7 @@ curl -s -X POST http://localhost:3000/api/validate \
 
 ---
 
-## Limitations of Validify Lab (as documented)
+## Limitations of Validify Kit (as documented)
 
 - Email check validates *format*, not whether the address exists.
 - Custom validators are synchronous only.
