@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VALIDIFY KIT — Developer Validation Playground</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══ HEADER ═══════════════════════════════════════════════════════════ -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="logo">
+          <span class="logo-icon">⬡</span>
+          <div class="logo-text-wrap">
+            <span class="logo-text">VALIDIFY KIT</span>
+            <span class="logo-badge">Powered by validify-kit</span>
+          </div>
+        </div>
+        <p class="header-subtitle">Developer Validation Playground</p>
+      </div>
+      <div class="header-right">
+        <div class="api-status" id="apiStatus">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="status-label" id="statusLabel">Checking API…</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ══════════════════════════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- ── Two-column layout ─────────────────────────────────────────────── -->
+    <div class="columns">
+
+      <!-- Left: Registration Form -->
+      <section class="card form-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <span class="card-icon">📋</span> User Registration
+          </h2>
+          <p class="card-subtitle">Validated by <code>validify-kit</code> on the backend</p>
+        </div>
+
+        <form id="registrationForm" novalidate autocomplete="off">
+
+          <!-- Name -->
+          <div class="field-group" id="fg-name">
+            <label class="field-label" for="name">
+              Full Name <span class="required-star">*</span>
+            </label>
+            <input
+              class="field-input"
+              type="text"
+              id="name"
+              name="name"
+              placeholder="e.g. Alice Johnson"
+            />
+            <span class="field-hint">Min 3 characters · whitespace is trimmed by validify-kit</span>
+            <span class="field-error" id="err-name"></span>
+          </div>
+
+          <!-- Email -->
+          <div class="field-group" id="fg-email">
+            <label class="field-label" for="email">
+              Email Address <span class="required-star">*</span>
+            </label>
+            <input
+              class="field-input"
+              type="text"
+              id="email"
+              name="email"
+              placeholder="e.g. Alice@Example.COM"
+            />
+            <span class="field-hint">validify-kit lowercases the email automatically</span>
+            <span class="field-error" id="err-email"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="field-group" id="fg-password">
+            <label class="field-label" for="password">
+              Password <span class="required-star">*</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                class="field-input"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Min 8 chars, upper + lower + digit + symbol"
+              />
+              <button type="button" class="toggle-pw" id="togglePw" aria-label="Toggle password visibility">👁</button>
+            </div>
+            <span class="field-hint">Must contain uppercase, lowercase, number and special character</span>
+            <span class="field-error" id="err-password"></span>
+          </div>
+
+          <!-- Age -->
+          <div class="field-group" id="fg-age">
+            <label class="field-label" for="age">
+              Age <span class="required-star">*</span>
+            </label>
+            <input
+              class="field-input"
+              type="number"
+              id="age"
+              name="age"
+              placeholder="Must be 18 or older"
+              min="0"
+            />
+            <span class="field-hint">Must be a number ≥ 18</span>
+            <span class="field-error" id="err-age"></span>
+          </div>
+
+          <!-- Phone -->
+          <div class="field-group" id="fg-phone">
+            <label class="field-label" for="phone">
+              Phone Number <span class="required-star">*</span>
+            </label>
+            <input
+              class="field-input"
+              type="text"
+              id="phone"
+              name="phone"
+              placeholder="e.g. +1 800 555 0100"
+            />
+            <span class="field-hint">Pattern validated by validify-kit regex · 8–16 digits · optional + prefix · spaces or hyphens only</span>
+            <span class="field-error" id="err-phone"></span>
+          </div>
+
+          <!-- Skills -->
+          <div class="field-group" id="fg-skills">
+            <label class="field-label">
+              Skills <span class="required-star">*</span>
+            </label>
+            <div class="skills-container" id="skillsContainer">
+              <!-- skill chips rendered by JS -->
+            </div>
+            <div class="skills-input-row">
+              <input
+                class="field-input"
+                type="text"
+                id="skillInput"
+                placeholder="Type a skill and press Enter or Add"
+              />
+              <button type="button" class="btn-add-skill" id="addSkillBtn">Add</button>
+            </div>
+            <span class="field-hint">At least 1 skill · array validation via minItems: 1</span>
+            <span class="field-error" id="err-skills"></span>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              <span class="btn-icon">🚀</span> Register &amp; Validate
+            </button>
+            <button type="button" class="btn btn-secondary" id="resetBtn">
+              <span class="btn-icon">↺</span> Reset Form
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- Right: API Response Panel -->
+      <section class="card response-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <span class="card-icon">📡</span> API Response
+          </h2>
+          <p class="card-subtitle">Live output from <code>POST /api/register</code></p>
+        </div>
+
+        <!-- Status bar -->
+        <div class="response-status-bar" id="responseStatusBar">
+          <div class="status-empty">
+            <span class="status-empty-icon">⏳</span>
+            <span>Submit the form to see the response</span>
+          </div>
+        </div>
+
+        <!-- Summary row -->
+        <div class="response-summary hidden" id="responseSummary">
+          <div class="summary-pill" id="summaryValid"></div>
+          <div class="summary-pill" id="summaryCode"></div>
+        </div>
+
+        <!-- Error list -->
+        <div class="response-section hidden" id="errorSection">
+          <h3 class="response-section-title">❌ Validation Errors</h3>
+          <ul class="error-list" id="errorList"></ul>
+        </div>
+
+        <!-- Sanitized data -->
+        <div class="response-section hidden" id="sanitizedSection">
+          <h3 class="response-section-title">🧹 Sanitized Data</h3>
+          <p class="sanitized-note">This is the data <em>after</em> validify-kit sanitization (original req.body was not mutated).</p>
+          <div class="sanitized-fields" id="sanitizedFields"></div>
+        </div>
+
+        <!-- JSON viewer -->
+        <div class="response-section" id="jsonSection">
+          <h3 class="response-section-title">⬢ Raw JSON Response</h3>
+          <pre class="json-viewer" id="jsonViewer">// No request sent yet</pre>
+        </div>
+
+      </section>
+    </div><!-- /.columns -->
+
+    <!-- ══ TEST CASES ═══════════════════════════════════════════════════════ -->
+    <section class="card test-card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">🧪</span> Test Cases
+        </h2>
+        <p class="card-subtitle">Click to auto-fill the form, then press <strong>Register &amp; Validate</strong></p>
+      </div>
+
+      <!-- General test cases -->
+      <div class="test-section-label">General Scenarios</div>
+      <div class="test-cases-grid" id="testCasesGrid">
+        <!-- filled by JS -->
+      </div>
+
+      <!-- Phone validation test cases -->
+      <div class="test-section-label phone-label">
+        📞 Phone Number Validation
+        <span class="phone-label-sub">Tests run against the backend via POST /api/register</span>
+      </div>
+      <div class="phone-test-columns">
+        <div class="phone-test-group">
+          <div class="phone-group-title valid-title">✅ Valid Numbers</div>
+          <div class="test-cases-grid" id="phoneValidGrid">
+            <!-- filled by JS -->
+          </div>
+        </div>
+        <div class="phone-test-group">
+          <div class="phone-group-title invalid-title">❌ Invalid Numbers</div>
+          <div class="test-cases-grid" id="phoneInvalidGrid">
+            <!-- filled by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ FEATURES ══════════════════════════════════════════════════════════ -->
+    <section class="card features-card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="card-icon">⚡</span> Features Demonstrated
+        </h2>
+        <p class="card-subtitle">What this app shows about <code>validify-kit</code></p>
+      </div>
+      <div class="features-grid">
+
+        <div class="feature-item">
+          <div class="feature-icon">🗂️</div>
+          <div>
+            <h4 class="feature-title">Schema-Driven Validation</h4>
+            <p class="feature-desc">Define rules once in a plain JS object; validify-kit enforces them automatically on every request.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🔗</div>
+          <div>
+            <h4 class="feature-title">Express Middleware</h4>
+            <p class="feature-desc"><code>validateRequest(schema)</code> plugs directly into an Express route — no boilerplate required.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">📧</div>
+          <div>
+            <h4 class="feature-title">Email Validation</h4>
+            <p class="feature-desc">The <code>email: true</code> rule checks RFC-compliant format. Combined with <code>lowercase: true</code> for automatic normalisation.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🔐</div>
+          <div>
+            <h4 class="feature-title">Strong Password Checks</h4>
+            <p class="feature-desc"><code>uppercase, lowercase, number, specialChar</code> rules enforce password strength. <code>isStrongPassword()</code> is also available as a standalone helper.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🔢</div>
+          <div>
+            <h4 class="feature-title">Number &amp; Range Validation</h4>
+            <p class="feature-desc"><code>type: 'number'</code> with <code>min</code> / <code>max</code> enforces numeric bounds — used here for age ≥ 18.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">📋</div>
+          <div>
+            <h4 class="feature-title">Array Validation</h4>
+            <p class="feature-desc"><code>type: 'array'</code> with <code>minItems: 1</code> ensures the skills list is non-empty. <code>uniqueItems</code> and per-item schemas are also supported.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🔍</div>
+          <div>
+            <h4 class="feature-title">Pattern (Regex) Validation</h4>
+            <p class="feature-desc">The <code>pattern</code> rule accepts a RegExp; used here to validate international phone-number formats (8–16 digits, optional <code>+</code> prefix).</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🧹</div>
+          <div>
+            <h4 class="feature-title">Input Sanitization</h4>
+            <p class="feature-desc"><code>trim: true</code> strips whitespace from name &amp; phone. <code>lowercase: true</code> normalises email. The original <code>req.body</code> is never mutated — sanitized data lives in <code>req.sanitizedBody</code>.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══ FOOTER ════════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <p>Built with <strong>validify-kit</strong> · Express.js · Vanilla JS &nbsp;|&nbsp; <code>npm install validify-kit</code></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
